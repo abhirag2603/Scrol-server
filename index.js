@@ -4,6 +4,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import userRouter from './routes/user.route.js'
 import connectDB from './db/db.js'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 const app = express()
@@ -15,6 +16,7 @@ app.use(express.static("public"))
 app.use(express.json())
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use(cookieParser())
 
 connectDB()
 .then(()=>
@@ -27,7 +29,7 @@ connectDB()
     console.log("MONGODB connection failed:",error)
 })
 
-app.use('/api/v1/users',userRouter)
+app.use('/users',userRouter)
 
 
 
