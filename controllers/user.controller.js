@@ -3,18 +3,20 @@ import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
+const saltRound=10;
 
 export const register = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
+    console.log(password)
 
     const existedUser = await User.findOne({ email });
 
     if (existedUser) {
       throw new Error("User already exists");
     }
-
-    const passwordHash = await bcrypt.hash(password, 10);
+     
+    const passwordHash = await bcrypt.hash(password, saltRound);
 
     const newUser = new User({
       firstName,
@@ -74,3 +76,15 @@ export const login = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const logout = async(req, res)=>{
+  const options = {
+    httpOnly: true,
+    secure: true
+}
+
+ return res
+ .status(200)
+ .clearCookie("token", options)
+ .json("User logged out")
+}
