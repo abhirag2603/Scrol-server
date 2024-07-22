@@ -86,5 +86,5 @@ export const logout = async(req, res)=>{
  return res
  .status(200)
  .clearCookie("token", options)
- .json("User logged out")
+ .json({message: "User logged out"})
 }
