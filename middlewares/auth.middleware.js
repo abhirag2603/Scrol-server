@@ -9,8 +9,7 @@ export const verifyJWT = async (req, res, next) => {
       throw new Error("Unauthorized request");
     }
 
-    const decodedToken =await jwt.verify(token, process.env.TOKEN_SECRET);
-    console.log("Decoded Token:", decodedToken);
+    const decodedToken =await jwt.verify(token, process.env.TOKEN_SECRET);;
 
     const id = decodedToken?.id;
     if (!id) {
@@ -18,7 +17,6 @@ export const verifyJWT = async (req, res, next) => {
     }
 
     const user = await User.findById(id).select("-password");
-    console.log("User found:", user);
 
     if (!user) {
       throw new Error("Invalid Access Token");
