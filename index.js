@@ -3,6 +3,7 @@ import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import userRouter from './routes/user.route.js'
+import postRouter from './routes/post.route.js'
 import connectDB from './db/db.js'
 import cookieParser from 'cookie-parser'
 
@@ -30,6 +31,7 @@ connectDB()
 })
 
 app.use('/users',userRouter)
+app.use('/posts',postRouter)
 
 
 
