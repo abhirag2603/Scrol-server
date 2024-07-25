@@ -1,31 +1,50 @@
-import {v2 as cloudinary} from 'cloudinary';
-import fs from "fs"
-          
-cloudinary.config({ 
-  cloud_name:process.env.CLOUDINARY_NAME , 
-  api_key:process.env.CLOUDINARY_KEY , 
-  api_secret:process.env.mPVMAXAGh7x81x3uggRdOc6s4aw  
-});
+import dotenv from 'dotenv'
+dotenv.config();
 
+import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
+import path from 'path'; // Import the path module
+
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_NAME, 
+  api_key: process.env.CLOUDINARY_KEY, 
+  api_secret: process.env.CLOUDINARY_SECRET 
+});
 
 const uploadOnCloudinary = async (localFilePath) => {
     try {
-        if (!localFilePath) return null
-        //upload the file on cloudinary
-        const response = await cloudinary.uploader.upload(localFilePath, {
-            resource_type: "auto"
-        })
-        // file has been uploaded successfull
-        //console.log("file is uploaded on cloudinary ", response.url);
-        fs.unlinkSync(localFilePath)
+        if (!localFilePath) {
+            console.error('No file path provided');
+            return null;
+        }
+
+        const normalizedPath = path.resolve(localFilePath);
+
+        if (!fs.existsSync(normalizedPath)) {
+            console.error('File does not exist:', normalizedPath);
+            return null;
+        }
+
+        const response = await cloudinary.uploader.upload(normalizedPath, {
+            resource_type: 'auto'
+        });
+
+        if (!response || !response.url) {
+            console.error('Failed to get the URL from Cloudinary response:', response);
+            return null;
+        }
+
+        fs.unlinkSync(normalizedPath);
+
         return response;
 
     } catch (error) {
-        fs.unlinkSync(localFilePath) // remove the locally saved temporary file as the upload operation got failed
+        console.error('Error uploading to Cloudinary:', error);
+        if (fs.existsSync(localFilePath)) {
+            fs.unlinkSync(localFilePath); // Ensure the local file is deleted even on error
+        }
         return null;
     }
-}
+};
 
-
-
-export {uploadOnCloudinary}
+export { uploadOnCloudinary };

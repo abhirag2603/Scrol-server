@@ -7,7 +7,7 @@ const saltRound=10;
 
 export const register = async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { username, firstName, lastName, email, password } = req.body;
     console.log(password)
 
     const existedUser = await User.findOne({ email });
@@ -19,6 +19,7 @@ export const register = async (req, res) => {
     const passwordHash = await bcrypt.hash(password, saltRound);
 
     const newUser = new User({
+      username,
       firstName,
       lastName,
       email,

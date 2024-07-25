@@ -8,9 +8,9 @@ router.route("/login").post(login)
 router.route("/register").post(register) 
 router.route("/logout").post(verifyJWT, logout) 
 router.route("/getcurrentuser").post(verifyJWT, getCurrentUser) 
-router.get("/:id", verifyToken, getUser);
-router.get("/:id/friends", verifyToken, getUserFriends);
-router.patch("/:id/:friendId", verifyToken, addRemoveFriend);
+router.get("/:id", verifyJWT, getUser);
+router.get("/:id/friends", verifyJWT, getUserFriends);
+router.patch("/:id/:friendId", verifyJWT, addRemoveFriend);
 
 
 
