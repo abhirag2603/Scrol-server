@@ -7,17 +7,22 @@ import postRouter from './routes/post.route.js'
 import connectDB from './db/db.js'
 import cookieParser from 'cookie-parser'
 
-dotenv.config()
+
 const app = express()
+
+dotenv.config()
+
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true
 }))
 app.use(express.static("public"))
 app.use(express.json())
-app.use(bodyParser.json({ limit: "30mb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
+app.use(bodyParser.json({  extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 connectDB()
 .then(()=>

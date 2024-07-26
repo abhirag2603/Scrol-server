@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import User from "../models/user.model.js";
+import User from '../models/user.model.js';
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
@@ -8,7 +7,6 @@ const saltRound=10;
 export const register = async (req, res) => {
   try {
     const { username, firstName, lastName, email, password } = req.body;
-    console.log(password)
 
     const existedUser = await User.findOne({ email });
 
@@ -46,12 +44,15 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
+  const{email,password}= req.body;
+  console.log('Request Body:', req.body);
+   console.log('Email:', email);
+   console.log('Password:', password);
+   try{
+    const user = await User.findOne({email});
+    
     if (!user) {
-      return res.status(400).json({ error: "Invalid email or password" });
+      return res.status(400).json({ error: "user does not exists" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);

@@ -4,12 +4,11 @@ import { uploadOnCloudinary } from '../utils/cloudinary.js';
 
 export const createPost = async (req, res) => {
     try {
-        const { userId, description } = req.body;
-        const user = await User.findById(userId);
+        const { username, description } = req.body;
+        const user = await User.findOne({username});
 
     
         const pictureLocalPath = req.file?.path;
-        console.log('User ID:', userId);
         console.log('Description:', description);
         console.log('Picture Local Path:', pictureLocalPath);
 
@@ -25,7 +24,8 @@ export const createPost = async (req, res) => {
         }
 
         const newPost = new Post({
-            userId,
+            userId:user._id,
+            username:username,
             firstName: user.firstName,
             lastName: user.lastName,
             description,
