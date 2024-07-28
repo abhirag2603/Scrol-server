@@ -6,7 +6,9 @@ import userRouter from './routes/user.route.js'
 import postRouter from './routes/post.route.js'
 import connectDB from './db/db.js'
 import cookieParser from 'cookie-parser'
-
+import User from './models/user.model.js'
+import Post from './models/post.model.js'
+import {users, posts} from './data/index.js'
 
 const app = express()
 
@@ -30,6 +32,10 @@ connectDB()
       app.listen(process.env.PORT||8000,()=>{
         console.log(`server is running at port: ${process.env.PORT}`)
     })
+
+    //one time
+    // User.insertMany(users)
+    // Post.insertMany(posts)
 })
 .catch((error)=>{
     console.log("MONGODB connection failed:",error)
