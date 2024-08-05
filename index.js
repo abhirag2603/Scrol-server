@@ -16,7 +16,6 @@ dotenv.config()
 
 app.use(cors({
     origin: 'http://localhost:5173', // Replace with your frontend origin
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
     credentials: true // Allow credentials (e.g., cookies)
   }));
 app.use(express.static("public"))

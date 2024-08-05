@@ -60,16 +60,17 @@ export const login = async (req, res) => {
       return res.status(400).json({ error: "Invalid email or password" });
     }
 
-    const token = jwt.sign(
+    const token = jwt.sign( 
       { id: user._id },
       process.env.TOKEN_SECRET,
       { expiresIn: "1h" }
     );
-
+    console.log(token)
     res.cookie("token", token, {
-      httpOnly: true,
+      httpOnly: true, // 'None' if cross-site
       maxAge: 3600000,
     });
+    
 
     const { password: pwd, ...userWithoutPassword } = user.toObject();
 
