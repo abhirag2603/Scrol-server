@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser'
 import User from './models/user.model.js'
 import Post from './models/post.model.js'
 import {users, posts} from './data/index.js'
+import session from 'express-session'
 
 const app = express()
 
