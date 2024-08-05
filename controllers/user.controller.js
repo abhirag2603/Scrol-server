@@ -71,6 +71,7 @@ export const login = async (req, res) => {
       httpOnly: true, // 'None' if cross-site
       maxAge: 3600000,
       sameSite: 'None',
+      secure: true,
     });
     
 
@@ -85,6 +86,7 @@ export const login = async (req, res) => {
 export const logout = async(req, res)=>{
   const options = {
     httpOnly: true,
+    secure: true,
     sameSite: 'None',
 }
 
