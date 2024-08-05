@@ -35,6 +35,7 @@ export const register = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 3600000,
+      sameSite: 'None',
     });
 
     res.status(201).json({ user: savedUser, token });
@@ -69,6 +70,7 @@ export const login = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true, // 'None' if cross-site
       maxAge: 3600000,
+      sameSite: 'None',
     });
     
 
@@ -83,7 +85,7 @@ export const login = async (req, res) => {
 export const logout = async(req, res)=>{
   const options = {
     httpOnly: true,
-    secure: true
+    sameSite: 'None',
 }
 
  return res
