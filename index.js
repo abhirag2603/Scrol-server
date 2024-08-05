@@ -18,6 +18,17 @@ app.use(cors({
     origin: 'http://localhost:5173', // Replace with your frontend origin
     credentials: true // Allow credentials (e.g., cookies)
   }));
+
+  app.use(session({
+    secret: 'your-secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: true, // Set to true if using HTTPS, false for local development
+      sameSite: 'None', // Ensure cross-site cookies are allowed
+    }
+  }));
+
 app.use(express.static("public"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
