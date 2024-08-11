@@ -34,7 +34,6 @@ export const register = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 3600000,
       sameSite: 'None',
     });
 
@@ -69,7 +68,6 @@ export const login = async (req, res) => {
     console.log(token)
     res.cookie("token", token, {
       httpOnly: true, // 'None' if cross-site
-      maxAge: 3600000,
       sameSite: 'None',
       secure: true,
     });
