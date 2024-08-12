@@ -29,7 +29,6 @@ export const register = async (req, res) => {
     const token = jwt.sign(
       { id: savedUser._id },
       process.env.TOKEN_SECRET,
-      { expiresIn: "1h" }
     );
 
     res.cookie("token", token, {
@@ -63,7 +62,6 @@ export const login = async (req, res) => {
     const token = jwt.sign( 
       { id: user._id },
       process.env.TOKEN_SECRET,
-      { expiresIn: "1h" }
     );
     console.log(token)
     res.cookie("token", token, {
