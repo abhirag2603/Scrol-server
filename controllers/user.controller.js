@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
 const saltRound=10;
+import { uploadOnCloudinary } from '../utils/cloudinary.js';
 
 export const register = async (req, res) => {
   try {
@@ -157,3 +158,33 @@ export const addRemoveFriend= async(req,res)=>{
     res.status(400).json({message: error.message});
   }
 }
+
+export const editProfile = async (req, res) => {
+  const { userId } = req.params;
+  const { firstName, lastName, username } = req.body;
+  const avatarPath = req.file?.path;
+
+  let updateData = { firstName, lastName, username };
+
+  try {
+    // Upload avatar if provided and add its URL to updateData
+    if (avatarPath) {
+      const avatarPicture = await uploadOnCloudinary(avatarPath);
+      if (!avatarPicture) {
+        return res.status(500).json({ message: 'Failed to upload avatar to Cloudinary' });
+      }
+      updateData.avatar = avatarPicture.url;
+    }
+
+    // Update user profile
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, { new: true });
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ message: 'Error updating profile', error });
+  }
+};
