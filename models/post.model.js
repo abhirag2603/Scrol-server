@@ -8,7 +8,7 @@ const postSchema = mongoose.Schema(
     },
     userId:{
       type: String,
-      required: true,
+      required: true, 
     },
     firstName: {
       type: String,

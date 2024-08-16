@@ -160,7 +160,6 @@ export const addRemoveFriend= async(req,res)=>{
     res.status(400).json({message: error.message});
   }
 }
-
 export const editProfile = async (req, res) => {
   const { userId } = req.params;
   const { firstName, lastName, username } = req.body;
@@ -184,15 +183,20 @@ export const editProfile = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    await Post.updateMany(
+    // Update posts related to the user
+    const updateResult = await Post.updateMany(
       { userId: userId },
       { 
-          userPicturePath: updatedUser.avatar, 
-          firstName: updatedUser.firstName, 
-          lastName: updatedUser.lastName,
-          username: updatedUser.username
+        userPicturePath: updatedUser.avatar, 
+        firstName: updatedUser.firstName, 
+        lastName: updatedUser.lastName,
+        username: updatedUser.username
       }
-  );
+    );
+
+    if (updateResult.nModified === 0) {
+      console.warn('No posts were updated. Ensure the userId matches existing posts.');
+    }
 
     res.status(200).json(updatedUser);
   } catch (error) {
@@ -200,3 +204,4 @@ export const editProfile = async (req, res) => {
     res.status(500).json({ message: 'Error updating profile', error });
   }
 };
+
