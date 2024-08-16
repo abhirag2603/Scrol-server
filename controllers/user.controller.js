@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import Post from '../models/post.model.js'
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
@@ -65,6 +66,7 @@ export const login = async (req, res) => {
       process.env.TOKEN_SECRET,
     );
     console.log(token)
+    
     res.cookie("token", token, {
       httpOnly: true, // 'None' if cross-site
       sameSite: 'None',
@@ -181,6 +183,16 @@ export const editProfile = async (req, res) => {
     if (!updatedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
+
+    await Post.updateMany(
+      { userId: userId },
+      { 
+          userPicturePath: updatedUser.avatar, 
+          firstName: updatedUser.firstName, 
+          lastName: updatedUser.lastName,
+          username: updatedUser.username
+      }
+  );
 
     res.status(200).json(updatedUser);
   } catch (error) {

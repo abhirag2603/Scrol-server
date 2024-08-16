@@ -6,34 +6,26 @@ import mongoose from 'mongoose';
 export const createPost = async (req, res) => {
     try {
         const { username, description } = req.body;
-        const user = await User.findOne({username});
+        const user = await User.findOne({ username });
 
-    
         const pictureLocalPath = req.file?.path;
-        console.log('Description:', description);
-        console.log('Picture Local Path:', pictureLocalPath);
 
-        if (!pictureLocalPath) {
-            return res.status(400).json({ message: 'No picture uploaded' });
-        }
+        let postPicture = { url: "" }; // Default to an empty string if no picture is uploaded
 
-    
-        const postPicture = await uploadOnCloudinary(pictureLocalPath);
-
-        if (!postPicture) {
-            return res.status(500).json({ message: 'Failed to upload picture to Cloudinary' });
+        if (pictureLocalPath) {
+            postPicture = await uploadOnCloudinary(pictureLocalPath);
         }
 
         const newPost = new Post({
-            userId:user._id,
-            username:username,
+            userId: user._id,
+            username: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
             description,
             userPicturePath: user.avatar,
-            picture: postPicture.url,
+            picture: postPicture.url, // Will be empty if no picture was uploaded
             likes: {},
-            comments: []
+            comments: [],
         });
 
         await newPost.save();
@@ -46,6 +38,7 @@ export const createPost = async (req, res) => {
         res.status(409).json({ message: error.message });
     }
 };
+
 
 export const getFeedPosts = async(req,res)=>{
     try {
