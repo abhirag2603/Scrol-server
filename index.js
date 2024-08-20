@@ -16,7 +16,7 @@ const app = express()
 dotenv.config()
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://scrol-client.vercel.app'], // Replace with your frontend origin
+    origin: ['http://localhost:5173', 'https://scrol-client.vercel.app','https://scrol-client.netlify.app'], // Replace with your frontend origin
     credentials: true // Allow credentials (e.g., cookies)
   }));
 
