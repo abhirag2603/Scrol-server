@@ -34,11 +34,11 @@ export const register = async (req, res) => {
     );
 
     res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: 'None',
-      secure: true,
-      path: '/',             // Make cookie available across the entire site
+      httpOnly: true,       // Accessible only by the web server
+      sameSite: 'None',     // Required for cross-site cookies
+      secure: true,         // Send cookie only over HTTPS
     });
+    
 
     res.status(201).json({ user: savedUser, token });
   } catch (error) {
@@ -70,11 +70,11 @@ export const login = async (req, res) => {
     console.log(token)
     
     res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: 'None',
-      secure: true,
-      path: '/',             // Make cookie available across the entire site
+      httpOnly: true,       // Accessible only by the web server
+      sameSite: 'None',     // Required for cross-site cookies
+      secure: true,         // Send cookie only over HTTPS
     });
+    
     
 
     const { password: pwd, ...userWithoutPassword } = user.toObject();
