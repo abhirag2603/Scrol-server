@@ -36,6 +36,8 @@ export const register = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: 'None',
+      secure: true,
+      path: '/',             // Make cookie available across the entire site
     });
 
     res.status(201).json({ user: savedUser, token });
@@ -68,9 +70,10 @@ export const login = async (req, res) => {
     console.log(token)
     
     res.cookie("token", token, {
-      httpOnly: true, // 'None' if cross-site
+      httpOnly: true,
       sameSite: 'None',
       secure: true,
+      path: '/',             // Make cookie available across the entire site
     });
     
 
