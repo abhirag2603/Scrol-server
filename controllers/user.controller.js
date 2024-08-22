@@ -208,3 +208,156 @@ export const editProfile = async (req, res) => {
   }
 };
 
+export const sendRequest = async(req,res)=>{
+  try {
+    const {id}=req.params;
+    const senderId=req.user._id;
+
+    const recipient = await User.findById(id);
+
+    if (!recipient) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (recipient.friendRequests.includes(senderId)) {
+      return res.status(400).json({ message: 'Friend request already sent' });
+    }
+
+    recipient.friendRequests.push(senderId);
+    await recipient.save();
+
+    res.status(200).json({ message: 'Friend request sent' });
+
+
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+
+export const acceptRequest = async (req, res) => {
+  try {
+    const { id, userId } = req.params;
+
+    // Check if both parameters are provided
+    if (!id || !userId) {
+      return res.status(400).json({ message: 'Missing required parameters' });
+    }
+
+    const recipientId = userId;
+    const senderId = id;
+
+    // Fetch the recipient and sender users
+    const recipient = await User.findById(recipientId);
+    const sender = await User.findById(senderId);
+
+    // Check if both users exist
+    if (!recipient || !sender) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find the index of the sender in the recipient's friendRequests
+    const requestIndex = recipient.friendRequests.indexOf(senderId);
+
+    // If request not found, return error
+    if (requestIndex === -1) {
+      return res.status(400).json({ message: 'Friend request not found' });
+    }
+
+    // Remove the friend request using splice
+    recipient.friendRequests.splice(requestIndex, 1);
+
+    // Add the sender to the recipient's friends list
+    recipient.friends.push(senderId);
+    sender.friends.push(recipientId);
+
+    // Save both users
+    await recipient.save();
+    await sender.save();
+
+    res.status(200).json({ message: 'Friend request accepted' });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const rejectRequest = async (req, res) => {
+  try {
+    const { id, userId } = req.params;
+
+    if (!id || !userId) {
+      return res.status(400).json({ message: 'Missing required parameters' });
+    }
+
+    const recipientId = userId;
+    const senderId = id;
+
+
+    const recipient = await User.findById(recipientId);
+
+   
+    if (!recipient) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const requestIndex = recipient.friendRequests.indexOf(senderId);
+
+    if (requestIndex === -1) {
+      return res.status(400).json({ message: 'Friend request not found' });
+    }
+
+    recipient.friendRequests.splice(requestIndex, 1);
+
+    await recipient.save();
+
+    res.status(200).json({ message: 'Friend request rejected' });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+export const removeFriend = async (req, res) => {
+  try {
+    const { id, friendId } = req.params;
+    const user = await User.findById(id);
+    const friend = await User.findById(friendId);
+
+    if (!user || !friend) {
+      return res.status(404).json({ message: 'User or friend not found' });
+    }
+
+    // Check if the friend is in the user's friends list
+    const userFriendIndex = user.friends.indexOf(friendId);
+    if (userFriendIndex === -1) {
+      return res.status(400).json({ message: 'Friend not found in your friend list' });
+    }
+
+    // Check if the user is in the friend's friends list
+    const friendUserIndex = friend.friends.indexOf(id);
+    if (friendUserIndex === -1) {
+      return res.status(400).json({ message: 'User not found in friend\'s friend list' });
+    }
+
+    // Remove friend from user's friends list using splice
+    user.friends.splice(userFriendIndex, 1);
+
+    // Remove user from friend's friends list using splice
+    friend.friends.splice(friendUserIndex, 1);
+
+    // Save the updated user and friend
+    await user.save();
+    await friend.save();
+
+    res.status(200).json({ message: 'Friend removed successfully' });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
