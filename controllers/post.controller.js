@@ -40,17 +40,27 @@ export const createPost = async (req, res) => {
 };
 
  
-export const getFeedPosts = async(req,res)=>{
+export const getFeedPosts = async (req, res) => {
     try {
-        const posts = await Post.find()
-        .sort({createdAt: -1});
+        const { page = 1, limit = 6 } = req.query;
 
-        res.status(200).json(posts);
-        
+        const posts = await Post.find()
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(parseInt(limit));
+
+        const totalPosts = await Post.countDocuments();
+
+        res.status(200).json({
+            posts,
+            totalPages: Math.ceil(totalPosts / limit),
+            currentPage: page
+        });
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
 }
+
 
 export const getUserPosts= async(req,res)=>{;
     try {
