@@ -361,7 +361,7 @@ export const removeFriend = async (req, res) => {
   }
 };
 
-// controllers/user.controller.js
+
 export const searchUser = async (req, res) => {
   try {
     const { username } = req.params; // Changed to match the frontend query parameter name
@@ -388,6 +388,7 @@ export const searchUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 
 
