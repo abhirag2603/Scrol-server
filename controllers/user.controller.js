@@ -361,3 +361,33 @@ export const removeFriend = async (req, res) => {
   }
 };
 
+// controllers/user.controller.js
+export const searchUser = async (req, res) => {
+  try {
+    const { username } = req.params; // Changed to match the frontend query parameter name
+    const loggedInUserId = req.user?._id; // Get logged-in user ID from the middleware
+
+    if (!username) {
+      return res.status(400).json({ message: 'Query parameter is required' });
+    }
+
+    const regex = new RegExp(username, 'i');
+
+    // Modify query to exclude logged-in user
+    const users = await User.find({
+      username: { $regex: regex },
+      _id: { $ne: loggedInUserId } // Exclude the logged-in user
+    }).select('_id username firstName lastName avatar');
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: 'No users found' });
+    }
+
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
