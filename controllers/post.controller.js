@@ -1,5 +1,6 @@
 import Post from '../models/post.model.js';
 import User from '../models/user.model.js';
+import Comment from '../models/comment.model.js'
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
 import mongoose from 'mongoose';
 
@@ -120,3 +121,46 @@ export const deletePost = async (req, res) => {
     }
   };
   
+
+  export const addComment = async(req,res)=>{
+    try {
+        const{content,postId}= req.body;
+        const userId=req.user._id;
+
+        if(!content || !postId){
+            console.log("Content or post invalid");
+        }
+
+        const newComment = new Comment({
+            content,
+            postId,
+            userId,
+        })
+
+        const savedComment= await newComment.save();
+
+        res.status(201).json({comment: savedComment});
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: error.message });
+    }
+  }
+
+  export const getPostComments = async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const comments = await Comment.find({ postId }); // Assuming postId is the field in the Comment schema
+
+        if (!comments || comments.length === 0) {
+            console.log('No comments for this post');
+            return res.status(404).json({ message: 'No comments found' });
+        }
+
+        res.status(200).json(comments);
+
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ message: error.message });
+    }
+};
