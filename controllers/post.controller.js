@@ -146,21 +146,58 @@ export const deletePost = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
   }
-
   export const getPostComments = async (req, res) => {
     try {
         const { postId } = req.params;
-        const comments = await Comment.find({ postId }); // Assuming postId is the field in the Comment schema
 
+        // Fetch comments for the post
+        const comments = await Comment.find({ postId }).exec();
+        
         if (!comments || comments.length === 0) {
             console.log('No comments for this post');
             return res.status(404).json({ message: 'No comments found' });
         }
 
-        res.status(200).json(comments);
+        // Extract userIds from comments
+        const userIds = comments.map(comment => comment.userId);
+
+        // Fetch user details for all userIds
+        const users = await User.find({ _id: { $in: userIds } }).exec();
+
+        // Create a map of userId to user details
+        const userMap = users.reduce((acc, user) => {
+            acc[user._id] = user;
+            return acc;
+        }, {});
+
+        // Attach user details to each comment
+        const commentsWithUserDetails = comments.map(comment => ({
+            ...comment.toObject(), // Convert comment to a plain object
+            user: userMap[comment.userId] || {} // Add user details or an empty object if not found
+        }));
+
+        res.status(200).json(commentsWithUserDetails);
 
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ message: error.message });
     }
 };
+
+export const deleteComment = async(req,res)=>{
+    try {
+        const { commentId } = req.params;
+    
+        // Find and delete the comment
+        const deletedComment = await Comment.findByIdAndDelete(commentId);
+    
+        if (!deletedComment) {
+          return res.status(404).json({ message: 'Comment not found' });
+        }
+    
+        res.status(200).json({ message: 'Comment deleted successfully' });
+      } catch (error) {
+        console.error('Error deleting comment:', error);
+        res.status(500).json({ message: 'Internal server error' });
+      }
+}
