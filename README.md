@@ -70,34 +70,34 @@ yarn start
 ```
 By default, the server will run on http://localhost:8000.
 
-##API Endpoints
+## API Endpoints
 
-###Authentication
+### Authentication
 
--POST /api/auth/register: Register a new user.
--POST /api/auth/login: Log in a user and receive a JWT token.
--POST /api/auth/logout: Log out a user.
+- **POST** /api/auth/register: Register a new user.
+- **POST** /api/auth/login: Log in a user and receive a JWT token.
+- **POST** /api/auth/logout: Log out a user.
 
-###User
+### User
 
--GET /api/users: Search for users.
--GET /api/users/:id: Get a user profile by ID.
--PUT /api/users/:id: Update user profile.
--POST /api/users/friend-request: Send a friend request.
--PUT /api/users/friend-request/accept: Accept a friend request.
--PUT /api/users/friend-request/reject: Reject a friend request.
+- **GET** /api/users: Search for users.
+- **GET** /api/users/:id: Get a user profile by ID.
+- **PUT** /api/users/:id: Update user profile.
+- **POST** /api/users/friend-request: Send a friend request.
+- **PUT** /api/users/friend-request/accept: Accept a friend request.
+- **PUT** /api/users/friend-request/reject: Reject a friend request.
 
-###Post
+### Post
 
--POST /api/posts: Create a new post.
--GET /api/posts: Get all posts (supports pagination).
--GET /api/posts/:id: Get a post by ID.
--PUT /api/posts/:id: Update a post by ID.
--DELETE /api/posts/:id: Delete a post by ID.
--POST /api/posts/:id/like: Like a post.
--POST /api/posts/:id/comment: Comment on a post.
+- **POST** /api/posts: Create a new post.
+- **GET** /api/posts: Get all posts (supports pagination).
+- **GET** /api/posts/:id: Get a post by ID.
+- **PUT** /api/posts/:id: Update a post by ID.
+- **DELETE** /api/posts/:id: Delete a post by ID.
+- **POST** /api/posts/:id/like: Like a post.
+- **POST** /api/posts/:id/comment: Comment on a post.
 
-##Environment variables
+## Environment variables
 
 Create a .env file in the root of the project and add your environment variables. Here is an example:
 
