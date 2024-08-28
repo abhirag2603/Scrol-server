@@ -23,6 +23,7 @@ Scrol is a full-stack social media application that offers a minimal and clean U
 - **Multer**: Middleware for handling file uploads.
 - **Bcrypt.js**: Library for hashing passwords.
 - **Cors**: Middleware for enabling Cross-Origin Resource Sharing.
+- **Cloudinary** : Cloud storage for storing media.
 
 ## Getting Started
 
