@@ -101,9 +101,10 @@ By default, the server will run on http://localhost:8000.
 
 Create a .env file in the root of the project and add your environment variables. Here is an example:
 
-
+```bash
 MONGO_URI=mongodb://localhost:27017/scrol
 JWT_SECRET=your_jwt_secret
 CLOUDINARY_CLOUD_NAME=your_cloudinary_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+```
