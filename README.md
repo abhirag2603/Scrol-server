@@ -25,6 +25,35 @@ Scrol is a full-stack social media application that offers a minimal and clean U
 - **Cors**: Middleware for enabling Cross-Origin Resource Sharing.
 - **Cloudinary** : Cloud storage for storing media.
 
+  ## API Endpoints
+
+### Authentication
+
+- **POST** /api/auth/register: Register a new user.
+- **POST** /api/auth/login: Log in a user and receive a JWT token.
+- **POST** /api/auth/logout: Log out a user.
+
+### User
+
+- **GET** /api/users: Search for users.
+- **GET** /api/users/:id: Get a user profile by ID.
+- **PUT** /api/users/:id: Update user profile.
+- **POST** /api/users/friend-request: Send a friend request.
+- **PUT** /api/users/friend-request/accept: Accept a friend request.
+- **PUT** /api/users/friend-request/reject: Reject a friend request.
+
+### Post
+
+- **POST** /api/posts: Create a new post.
+- **GET** /api/posts: Get all posts (supports pagination).
+- **GET** /api/posts/:id: Get a post by ID.
+- **PUT** /api/posts/:id: Update a post by ID.
+- **DELETE** /api/posts/:id: Delete a post by ID.
+- **POST** /api/posts/:id/like: Like a post.
+- **POST** /api/posts/:id/comment: Comment on a post.
+
+## To see the implementation(API calls) and UI/frontend check https://github.com/abhirag2603/scrol_client
+
 ## Getting Started
 
 ### Prerequisites
@@ -32,6 +61,8 @@ Scrol is a full-stack social media application that offers a minimal and clean U
 - Node.js (v14 or higher)
 - npm or yarn
 - MongoDB (local or cloud instance)
+
+
 
 ### Installation
 
@@ -71,32 +102,6 @@ yarn start
 ```
 By default, the server will run on http://localhost:8000.
 
-## API Endpoints
-
-### Authentication
-
-- **POST** /api/auth/register: Register a new user.
-- **POST** /api/auth/login: Log in a user and receive a JWT token.
-- **POST** /api/auth/logout: Log out a user.
-
-### User
-
-- **GET** /api/users: Search for users.
-- **GET** /api/users/:id: Get a user profile by ID.
-- **PUT** /api/users/:id: Update user profile.
-- **POST** /api/users/friend-request: Send a friend request.
-- **PUT** /api/users/friend-request/accept: Accept a friend request.
-- **PUT** /api/users/friend-request/reject: Reject a friend request.
-
-### Post
-
-- **POST** /api/posts: Create a new post.
-- **GET** /api/posts: Get all posts (supports pagination).
-- **GET** /api/posts/:id: Get a post by ID.
-- **PUT** /api/posts/:id: Update a post by ID.
-- **DELETE** /api/posts/:id: Delete a post by ID.
-- **POST** /api/posts/:id/like: Like a post.
-- **POST** /api/posts/:id/comment: Comment on a post.
 
 ## Environment variables
 
